@@ -1,0 +1,186 @@
+Metadata-Version: 2.1
+Name: gmic
+Version: 2.8.1.dev8
+Summary: Binary Python3 bindings for the G'MIC C++ image processing library
+Home-page: https://github.com/dtschump/gmic-py
+Author: David Tschumperlé, Jonathan-David Schröder G'MIC GREYC IMAGE Team of CNRS, France
+Author-email: David.Tschumperle@ensicaen.fr, jonathan.schroder@gmail.com
+License: UNKNOWN
+Project-URL: Bug Reports, https://github.com/dtschump/gmic-py/issues
+Project-URL: Funding, https://libreart.info/en/projects/gmic
+Project-URL: Say Thanks!, https://twitter.com/gmic_ip
+Project-URL: Source, https://github.com/dtschump/gmic-py
+Keywords: image processing gmic g'mic voxel 2d 3d filter
+Platform: UNKNOWN
+Classifier: Development Status :: 2 - Pre-Alpha
+Classifier: Intended Audience :: Developers
+Classifier: Topic :: Artistic Software
+Classifier: License :: OSI Approved :: CEA CNRS Inria Logiciel Libre License, version 2.1 (CeCILL-2.1)
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.5
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Requires-Python: >=3.0, <4
+Description-Content-Type: text/markdown
+
+<a href="https://gmic.eu">![G'MIC Logo](https://gmic.eu/img/logo4.jpg)</a>
+<a href="https://www.python.org">![Python Logo](https://www.python.org/static/community_logos/python-logo-master-v3-TM-flattened.png)</a>
+
+#### 
+#### Python binding for G'MIC - A Full-Featured Open-Source Framework for Image Processing
+##### https://gmic.eu
+
+---------------------------
+
+# gmic-py
+
+![](https://github.com/myselfhimself/gmic-py/workflows/CPython%20GMIC%20Manylinux%202010%20%26%202014%20i686%20%26%20x86_64/badge.svg)
+![](https://github.com/myselfhimself/gmic-py/workflows/CPython%20GMIC%20MacOS%20build/badge.svg)
+![](https://github.com/dtschump/gmic-py/workflows/CPython%20GMIC%20Python%20package%20(Source%20and%20Debian/Ubuntu%20OS%20compilation)/badge.svg)
+
+The aim of this project is to provide an official Python 3 package of the G'MIC image processing library, with its platform-specific binaries bundled or auto-compiled.
+When this matures, running `pip install gmic-py` should be all you need to get ready and use G'MIC within data-science, games, video editing, texture editing etc.. Python scripts.
+
+This project is a work in progress and lives under the CeCILL license (similar to GNU Public License).
+
+## Quickstart
+You need Python 3.x and `pip` installed.
+Things work best with the last development version for now :)
+
+```bash
+pip install gmic==2.8.1.dev8 # Consider adding --only-binary if your machine makes you compile from source
+python3
+```
+```python
+import gmic
+import struct
+import random
+
+random_32x32_image = gmic.GmicImage(struct.pack('1024f', *[random.randint(0, 255) for i in range(1024)]), 32, 32) 
+random_32x32_image
+# Output: <gmic.GmicImage object at 0x7f1084c41c90 with _data address at 0x2772010, w=32 h=32 d=1 s=1 shared=0>
+
+gmic.run("print", images=random_32x32_image)
+# Output:
+# [gmic]-1./ Print image [0] = '[unnamed]'.
+# [0] = '[unnamed]':
+#   size = (32,32,1,1) [4096 b of floats].
+#   data = (152,88,134,92,50,179,33,248,18,81,84,187,(...),54,42,179,121,125,74,67,171,224,240,174,96).
+#   min = 0, max = 255, mean = 127.504, std = 75.1126, coords_min = (22,1,0,0), coords_max = (8,2,0,0).
+
+gmic.run("blur 2 print", images=random_32x32_image, image_names="my random blurred picture") # add "display" after "print" for a preview on Linux
+# Output:
+# [gmic]-1./ Print image [0] = 'my random blurred picture'.
+# [0] = 'my random blurred picture':
+#   size = (32,32,1,1) [4096 b of floats].
+#   data = (146.317,134.651,125.137,117.714,115.019,118.531,121.125,123.81,121.736,120.603,123.06,130.212,(...),116.879,114.402,117.773,119.173,117.546,117.341,122.487,133.949,143.605,145.584,137.652,125.728).
+#   min = 85.2638, max = 186.79, mean = 127.961, std = 11.9581, coords_min = (0,31,0,0), coords_max = (31,0,0,0).
+```
+
+## Official platform support
+You can build your own Gmic python binding on possibly any platform with a C/C++ compiler.
+Here is what we have managed to build and ship to [Gmic PyPI page](https://pypi.org/project/gmic/), allowing you to `pip install gmic` and use pre-built binaries or build `gmic-py` on the fly.
+Note that `gmic-py`'s package installer links to your machine's existing `libpng`, `OpenMP` and `libcURL` if found.
+
+| Build target                                                 | Basic gmic-py<sup>0</sup>  |  libpng I/O   | OpenMP | libcURL        | OpenCV         |
+| -----------                                                  | -------------------------  | ----------    |------- | -------        |--------        |
+| Build from source<sup>1</sup>                                | ✓                          | ✓ <sup>2</sup>| ✓      | ✓ <sup>2</sup> | ✓ <sup>2</sup> |
+| DIY Linux 32&64bit <sup>1</sup>                              | ✓                          | ✓ <sup>2</sup>| ✓      | ✓ <sup>2</sup> | ✓ <sup>2</sup> |
+| Pre-compiled Linux i686 & x86\_64 py3.4-3.8 (gcc)<sup>m</sup>| ✓                          | ✓             | ✓      | ✗ <sup>3</sup> | ✗              |
+| Pre-compiled MacOS 64 py3.5-3.8 (clang)                      | ✓                          | ✓             | ✓      | ✓              | ✗              |
+| Windows (unplanned)<sup>w</sup>                              | ✗                          | ✗             | ✗      | ✗              | ✗              |
+
+<sup>0</sup> ie. `gmic.GmicImage(bytes, w, h, d, s)`,  `gmic.run(..., "commands")`
+
+<sup>1</sup> ie. from this project's tarball or using `pip install gmic` with the (possibly default) "from source" option. Hack the setup.py if needed, should work well with just `libz` installed, preferably with `libfftw3` too to support all sizes of images. Compiling with `gcc` or `clang` should work well.
+
+<sup>2</sup> enabled if related library is found at compile time, using found `pkg-config` executable.
+
+<sup>3</sup> useful for samples retrieval and getting the latest filters collection updated; instead of linking against libcURL, any runtime-findable `curl` executable will be used, see [this issue](https://github.com/myselfhimself/gmic-py/issues/9); at anytime, use the `network 0` G'MIC command to disable internet access
+
+<sup>m</sup> those are actually manylinux2010 and manylinux2014 targets. Manylinux1 has been dropped
+
+<sup>w</sup> you can try building you own gmic-py builds on Windows using [MSYS2](https://www.msys2.org/)
+
+## Examples
+
+### Using your camera with G'MIC's optional OpenCV linking
+If your machine has `libopencv` installed and your gmic-py was compiled from source (ie. `python setup.py build`), it will be dynamically linked.
+
+[Example script](examples/opencv-camera/gmic-py-opencv-camera.py)
+
+![Live example](examples/opencv-camera/gmic-py-opencv-camera.gif)
+
+## Roadmap
+
+### Q4 2019
+1. Create a `pip install -e GITHUB_URL` installable Python package for GMIC, with an API very similar to the C++ library: `gmic_instance.run(...)`, `gmic(...)` and matching exception types. Binary dependencies [should be bundled as in this tutorial](https://python-packaging-tutorial.readthedocs.io/en/latest/binaries_dependencies.html).
+    1. Through `Ctypes` dynamic binding on an Ubuntu docker image using Python 2-3. DONE in [ctypes\_archive branch](https://github.com/dtschump/gmic-py/tree/ctypes_archive).
+    1. Through custom Python/C++ binding (see `gmicpy.cpp` and `setup.py`) WIP
+1. Create documented examples for various application domains. WIP
+
+### Q1-Q2 2020
+1. Move the package to official Python package repositories.
+1. In a separate repository, create a Blender Plugin, leveraging the Python library and exposing:
+  1. a single Blender GMIC 2D node with a text field or linkable script to add a GMIC expression
+  1. as many 2D nodes as there are types of GMIC 'operators'
+
+### Q3-Q4 2020
+1. In a separate repository, create a GMIC Inkscape plugin, leveraging the Python library (possibly applying only to image objects, as the Trace bitmap tool does).
+
+## Binding blueprint
+This is an overview of how we want the gmic binding inner working:
+```python3
+from gmic import Gmic, run, Image, GmicException
+#we give up the Gmic native List
+
+class GmicException:
+   def __init__(self, command, message):
+       self.command = command
+       self.message = message
+   def what(self):
+       pass
+   def command_help(self):
+       pass
+
+class Gmic:
+    def __init__(self, images=[]|tuple|iterable[Image], image_names=[]|tuple|iterable, include_stdlib=True, progress=None, is_abort=None):
+        self._status = None
+        self.include_stdlib = include_stdlib
+        # TODO V2 = progress, is_abort
+        if all params were given:
+           self.run(images, image_names, include_stdlib, progress, is_abort)
+
+    @throws GmicException
+    def run(self, images=[], images_names=[], progress=None, abort=None):
+        ....
+        self._status = ""
+        return self
+
+    def _build_lists(self):
+        self._build_gmic_images_list(self.images)
+        self._build_gmic_images_names_list(self.image_names)
+
+    def _build_gmic_images_list(self):
+        """Convert and store to Gmic builtin C++ type"""
+        pass
+
+    def _build_gmic_images_names_list(self):
+        """Convert and store to Gmic builtin C++ type"""
+        pass
+
+    @property
+    def status(self):
+       """ string result of last operation, or exception text if was raised, or user-entered text through a gmic command. 
+       This is a read-only attribute, starting with underscore. See https://stackoverflow.com/a/15812738/420684
+       :return str
+       """
+       return self._status
+
+
+def run(images=[]|tuple|iterable[Image], image_names=[]|tuple|iterable[Image], include_stdlib=True, progress=None, is_abort=None):
+    return Gmic(images, images_names, include_stdlib, progress, is_abort).run()
+```
+
+

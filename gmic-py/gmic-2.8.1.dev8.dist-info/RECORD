@@ -1,0 +1,10 @@
+gmic.cpython-37m-x86_64-linux-gnu.so,sha256=RmfxLEPI_aWXfv8G4Wk4pv75NNfd8aU7zjVvgChYLRQ,15679048
+gmic-2.8.1.dev8.dist-info/RECORD,,
+gmic-2.8.1.dev8.dist-info/WHEEL,sha256=Wzr7ustLd3r5KN3AVdAm7EECHYuYQiejXMdpS694wLU,112
+gmic-2.8.1.dev8.dist-info/top_level.txt,sha256=N5S8DOqgJb95TqY4faqXq7jvl0DZzqPYKJND1jokBQE,5
+gmic-2.8.1.dev8.dist-info/METADATA,sha256=mvlyoUEeBs7AGJ426AUVExq0phlP1tWVUVLJ_yt9htA,9929
+.libsgmic/libfftw3-3a26e910.so.3.2.3,sha256=0mstS89V04VdHr6L4FQQFO5GgaTs0QEeP8a77NuhIsQ,1062848
+.libsgmic/libpng12-640ca796.so.0.49.0,sha256=Pk6NWNLpg6k8_FNka9Jobg5YsIQglaIAJQJymAmo8j4,168192
+.libsgmic/libfftw3_threads-a2011c8b.so.3.2.3,sha256=r0MVg3lzD2TdO6-NH5aZev6LIhZIrieftGaKwCPcp_A,30424
+.libsgmic/libz-eb09ad1d.so.1.2.3,sha256=2uJu8RIWphORVNS2noiABa4wo041-h11BGDImiYQFvI,92080
+.libsgmic/libgomp-f7e03b3e.so.1.0.0,sha256=76BVnL8zq1gHU5iuCWYO6_i6Icpp-63rCGU0xGxZdII,93080
