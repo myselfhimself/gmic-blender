@@ -14,7 +14,7 @@ def register():
 def unregister():
     print("Unregistring " + bl_info["name"])
 
-def load_gmic_binary_library(self):
+def load_gmic_binary_library():
     global __GMIC_LOADED__
 
     if __GMIC_LOADED__:
