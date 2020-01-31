@@ -1,5 +1,18 @@
+# Clean old stuff first
+rm -f downloads/*.zip
+rm -f gmic-py/*.whl gmic-py/*.so gmic-py/*.dll
+rm -rf gmic-py/*info*
+rm -rf gmic-py/.libsgmic
+
+# Grab gmic-py .whl from Pypi.org and extract them
+python3 grab_whl_urls.py
+
+# Zip all of this into the downloads/ directory
 RELEASE_NAME=gmic-blender-addon-$(date +%F_%H_%M_%S)
+ADDON_PATH=downloads/$RELEASE_NAME.zip
 mkdir $RELEASE_NAME
 cp __init__.py gmic-py/ README.md $RELEASE_NAME -r
-zip downloads/$RELEASE_NAME.zip -r $RELEASE_NAME
+zip $ADDON_PATH -r $RELEASE_NAME
 rm -rf $RELEASE_NAME
+echo
+echo "here you are, static add-on to test in Blender: $ADDON_PATH"

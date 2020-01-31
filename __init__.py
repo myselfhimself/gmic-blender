@@ -6,6 +6,7 @@ bl_info = {
 
 # TODO ensure that globals are tolerated in Blender3d python scripting guidelines..
 __GMIC_LOADED__ = False
+__GMIC_PY_RELATIVE_LIBS_DIR = "gmic-py"
 
 def register():
     print("Registering " + bl_info["name"])
@@ -25,7 +26,7 @@ def load_gmic_binary_library():
 
     import os
     import sys
-    libdir = os.path.join(os.path.dirname(__file__), "gmic-py")
+    libdir = os.path.join(os.path.dirname(__file__), __GMIC_PY_RELATIVE_LIBS_DIR)
     if libdir not in sys.path:
         sys.path.append(libdir)
     try:
