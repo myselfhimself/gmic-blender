@@ -11,7 +11,7 @@ python3 grab_whl_urls.py
 RELEASE_NAME=gmic-blender-addon-$(date +%F_%H_%M_%S)
 ADDON_PATH=downloads/$RELEASE_NAME.zip
 mkdir $RELEASE_NAME
-cp __init__.py gmic-py/ README.md $RELEASE_NAME -r
+cp --parents __init__.py gmic-py/ assets/gmic_filters.json README.md $RELEASE_NAME -r
 zip $ADDON_PATH -r $RELEASE_NAME
 rm -rf $RELEASE_NAME
 echo
