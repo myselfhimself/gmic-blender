@@ -3,17 +3,23 @@ bl_info = {
     "blender": (2, 80, 0),
     "category": "Object",
 }
+import os
+import sys
 
 # TODO ensure that globals are tolerated in Blender3d python scripting guidelines..
+__GMIC_ADDON_ROOT_PATH = os.path.abspath(os.path.dirname(__file__))
+__GMIC_FILTERS_JSON_PATH = os.path.join(__GMIC_ADDON_ROOT_PATH, "assets", "gmic_filters.json")
 __GMIC_LOADED__ = False
 __GMIC_PY_RELATIVE_LIBS_DIR = "gmic-py"
 
 def register():
     print("Registering " + bl_info["name"])
-    if load_gmic_binary_library():
-        print(dir(gmic))
-    else:
+    if not load_gmic_binary_library():
         print("Failed loading G'MIC binary library :-(")
+    else:
+        print(dir(gmic))
+        generate_nodes_from_gmic_filters(load_gmic_filters())
+
 
 def unregister():
     print("Unregistring " + bl_info["name"])
@@ -26,7 +32,7 @@ def load_gmic_binary_library():
 
     import os
     import sys
-    libdir = os.path.join(os.path.dirname(__file__), __GMIC_PY_RELATIVE_LIBS_DIR)
+    libdir = os.path.join(__GMIC_ADDON_ROOT_PATH, __GMIC_PY_RELATIVE_LIBS_DIR)
     if libdir not in sys.path:
         sys.path.append(libdir)
     try:
@@ -36,3 +42,16 @@ def load_gmic_binary_library():
         raise LibraryLoadError("Cannot find fluid engine library: " + libname + "Details:" + sys.exc_info()[0])
 
     return __GMIC_LOADED__
+
+def load_gmic_filters():
+    import json
+    # TODO add cache? // mtime check?
+    filters_json = None
+    # TODO catch exception and make a nice error pop-in if open this file fails
+    with open(__GMIC_FILTERS_JSON_PATH) as f:
+        filters_json = f.read()
+    return json.loads(filters_json)
+
+def generate_nodes_from_gmic_filters(gmic_filters_dict):
+    print(gmic_filters_dict)
+    # TODO foreach loop on dict, create 1 node by filter
