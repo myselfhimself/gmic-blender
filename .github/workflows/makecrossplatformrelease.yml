@@ -15,7 +15,7 @@ jobs:
         uses: actions/checkout@v2
       - name: Build project # This would actually build your project, using zip for an example artifact
         run: |
-          bash make_addon_zip.bash
+          bash make_addon_zip.bash #dumps zip in downloads/gmic-blender-addon.zip
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
@@ -33,6 +33,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-          asset_path: ./gmic-blender-addon.zip
+          asset_path: ./downloads/gmic-blender-addon.zip
           asset_name: gmic-blender-addon.zip
           asset_content_type: application/zip
