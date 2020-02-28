@@ -45,6 +45,6 @@ jobs:
         python scripts/get_blender.py ${{ matrix.blender-version }}
     - name: Test Blender ${{ matrix.blender-version }} with pytest
       run: |
-        pip install pytest
+        pip3 install pytest
         yolk -l
-        python scripts/run_blender.py ${{ matrix.blender-version }}
+        python3 scripts/run_blender.py ${{ matrix.blender-version }}
