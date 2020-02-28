@@ -13,7 +13,7 @@ latest_release = releases[-1]
 
 def filename_to_skip(filename):
     """Skip cpython and non-manylinux linux releases"""
-    return re.match(r".*cpython.*|.*-linux-.*", filename) is not None
+    return re.match(r".*cpython.*|.*-linux-.*|.*manylinux2010.*", filename) is not None
 
 def python_version_to_keep(filename):
     return re.match(r".*cp(35|36|37|38).*", filename) is not None
