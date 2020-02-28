@@ -47,4 +47,12 @@ jobs:
       run: |
         pip3 install pytest
         yolk -l
+        which pip
+        which pip3
+        which python
+        which python3
+        echo "python pytest"
+        python -m pytest
+        echo "python3 pytest"
+        python3 -m pytest
         python3 scripts/run_blender.py ${{ matrix.blender-version }}
