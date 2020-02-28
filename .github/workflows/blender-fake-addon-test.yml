@@ -35,7 +35,8 @@ jobs:
         cd ..
     - name: Download Blender ${{ matrix.blender-version }} and testing it with pytest
       run: |
-        pip install -r scripts/requirements.txt blender_requirements.txt
+        pip install -r scripts/requirements.txt 
+        pip install -r blender_requirements.txt
         yolk -l
         python scripts/get_blender.py ${{ matrix.blender-version }}
         python scripts/run_blender.py ${{ matrix.blender-version }}
