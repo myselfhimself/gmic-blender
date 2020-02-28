@@ -33,18 +33,9 @@ jobs:
         cd blender-fake-addon-master/
         mv scripts/ tests/ fake_addon/ blender_requirements.txt ..
         cd ..
-#    - name: Set up System Blender
-#      if: startsWith(matrix.os, 'ubuntu')
-#      run: |
-#        sudo apt update
-#        sudo apt install -f -y blender
-    - name: Download Blender ${{ matrix.blender-version }}
+    - name: Download Blender ${{ matrix.blender-version }} and testing it with pytest
       run: |
-        pip install -r scripts/requirements.txt
+        pip install -r scripts/requirements.txt blender_requirements.txt
         yolk -l
         python scripts/get_blender.py ${{ matrix.blender-version }}
-    - name: Test Blender ${{ matrix.blender-version }} with pytest
-      run: |
-        pip install -r blender_requirements.txt
-        yolk -l
         python scripts/run_blender.py ${{ matrix.blender-version }}
