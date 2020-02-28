@@ -33,8 +33,6 @@ jobs:
         cd blender-fake-addon-master/
         mv scripts/ tests/ fake_addon/ ..
         cd ..
-        pip install -r scripts/requirements.txt
-        yolk -l
     - name: Set up System Blender
       if: startsWith(matrix.os, 'ubuntu')
       run: |
@@ -45,4 +43,6 @@ jobs:
         python scripts/get_blender.py ${{ matrix.blender-version }}
     - name: Test Blender ${{ matrix.blender-version }} with pytest
       run: |
+        pip install -r scripts/requirements.txt
+        yolk -l
         python scripts/run_blender.py ${{ matrix.blender-version }}
