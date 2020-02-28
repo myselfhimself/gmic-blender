@@ -31,7 +31,7 @@ jobs:
         wget https://github.com/douglaskastle/blender-fake-addon/archive/master.zip
         unzip master.zip
         cd blender-fake-addon-master/
-        mv scripts/ tests/ fake_addon/ ..
+        mv scripts/ tests/ fake_addon/ blender_requirements.txt ..
         cd ..
 #    - name: Set up System Blender
 #      if: startsWith(matrix.os, 'ubuntu')
@@ -45,6 +45,6 @@ jobs:
         python scripts/get_blender.py ${{ matrix.blender-version }}
     - name: Test Blender ${{ matrix.blender-version }} with pytest
       run: |
-        pip install pytest
+        pip install -r blender_requirements.txt
         yolk -l
         python scripts/run_blender.py ${{ matrix.blender-version }}
