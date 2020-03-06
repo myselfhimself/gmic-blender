@@ -25,5 +25,6 @@ jobs:
         python-version: 3.7
     - name: Download Blender ${{ matrix.blender-version }} and test it with pytest
       run: |
+        bash make_addon_zip.bash
         pip install -r blender_addon_tester_requirements.txt
         python test_gmic_blender_addon.py
