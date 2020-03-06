@@ -14,4 +14,4 @@ cp --parents __init__.py gmic-py/ assets/gmic_filters.json README.md $RELEASE_NA
 zip $ADDON_PATH -r $RELEASE_NAME
 rm -rf $RELEASE_NAME
 echo
-echo "here you are :) static add-on to test in Blender: $ADDON_PATH"
+echo "here you are, static add-on to test in Blender: $ADDON_PATH"
