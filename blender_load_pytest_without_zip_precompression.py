@@ -33,11 +33,12 @@ class SetupPlugin:
     def __init__(self, addon):
         self.addon = addon
         self.addon_dir = "local_addon"
-        self.bpy_module = None
+        self.bpy_module = "gmic-blender-addon"
         self.zfile = os.path.realpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "downloads", "gmic-blender-addon.zip"))
 
     def pytest_configure(self, config):
         #(self.bpy_module, self.zfile) = zip_addon(self.addon, self.addon_dir)
+        print("IN PYTEST_CONFIGURE")
         change_addon_dir(self.bpy_module, self.zfile, self.addon_dir)
         config.cache.set("bpy_module", self.bpy_module)
 

@@ -17,11 +17,12 @@ __GMIC_PY_RELATIVE_LIBS_DIR = "gmic-py"
 
 def register():
     print("Registering " + bl_info["name"])
-    if not load_gmic_binary_library():
-        print("Failed loading G'MIC binary library :-(")
-    else:
-        print(dir(gmic))
-        generate_nodes_from_gmic_filters(load_gmic_filters())
+    # TODO uncomment this when basic testing setup is ready
+    # if not load_gmic_binary_library():
+    #     print("Failed loading G'MIC binary library :-(")
+    # else:
+    #     print(dir(gmic))
+    #     generate_nodes_from_gmic_filters(load_gmic_filters())
 
 
 def unregister():
@@ -42,7 +43,7 @@ def load_gmic_binary_library():
         import gmic
         __GMIC_LOADED__ = True
     except ImportError as err:
-        raise LibraryLoadError("Cannot find fluid engine library: " + libname + "Details:" + sys.exc_info()[0])
+        raise LibraryLoadError("Cannot load gmic binary python module. Details:" + sys.exc_info()[0])
 
     return __GMIC_LOADED__
 
