@@ -1,0 +1,2 @@
+-e git://github.com/myselfhimself/blender-addon-tester.git@blender-addon-tester#egg=blender_addon_tester
+

@@ -1,8 +1,11 @@
 bl_info = {
     "name": "Blender G'MIC Add-on",
+    "author": "Jonathan-David Schröder",
     "blender": (2, 80, 0),
+    "version": (0, 0, 1),
     "category": "Object",
 }
+
 import os
 import sys
 

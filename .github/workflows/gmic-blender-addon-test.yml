@@ -23,20 +23,7 @@ jobs:
       uses: actions/setup-python@v1
       with:
         python-version: 3.7
-    - name: Install dependencies
+    - name: Download Blender ${{ matrix.blender-version }} and test it with pytest
       run: |
-        python --version
-        python -m pip install --upgrade pip
-        # Grab blender-fake-addon from myselfhimself's fork
-        wget https://github.com/myselfhimself/blender-fake-addon/archive/master.zip
-        unzip master.zip
-        cd blender-fake-addon-master/
-        mv scripts/ fake_addon/ blender_requirements.txt ..
-        cd ..
-    - name: Download Blender ${{ matrix.blender-version }} and testing it with pytest
-      run: |
-        pip install -r scripts/requirements.txt 
-        pip install -r blender_requirements.txt
-        yolk -l
-        python scripts/get_blender.py ${{ matrix.blender-version }}
-        python scripts/run_blender.py ${{ matrix.blender-version }}
+        pip install -r blender_addon_tester_requirements.txt
+        python test_gmic_blender_addon.py
