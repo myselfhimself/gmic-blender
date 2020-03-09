@@ -15,3 +15,6 @@ This is being worked on at the CNRS GREYC Image public research laboratory in Ca
 
 ## Installing
 For now, nothing works :) Still, the Continuous Delivery script is set up. [Head over to the Releases section for downloads.](https://github.com/myselfhimself/gmic-blender/releases)
+
+## Test Driven Development
+We are using a WIP Blender Python Pytest framework named [blender-addon-tester](https://github.com/myselfhimself/blender-addon-tester).
