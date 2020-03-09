@@ -6,7 +6,7 @@ rm -rf gmic-py/
 python3 grab_whl_urls.py
 
 # Zip all of this into the downloads/ directory
-RELEASE_NAME=gmic-blender #-$(date +%F_%H_%M_%S)
+RELEASE_NAME=gmic_blender #-$(date +%F_%H_%M_%S)
 ADDON_PATH=downloads/$RELEASE_NAME.zip
 mkdir -p downloads
 mkdir $RELEASE_NAME
