@@ -28,3 +28,8 @@ jobs:
         bash make_addon_zip.bash
         pip install -r blender_addon_tester_requirements.txt
         python test_gmic_blender_addon.py
+    - name: Expose coverage as a CI download
+      uses: actions/upload-artifact@v1
+      with:
+        name: coverage.xml
+        path: examples/testing-fake-addon/coverage.xml
