@@ -38,5 +38,5 @@ jobs:
     - name: Expose coverage as a CI download
       uses: actions/upload-artifact@v1
       with:
-        name: coverage.xml
+        name: ${{ matrix.os }}-blender-${{ matrix.blender-version }}-coverage.xml
         path: coverage.xml
