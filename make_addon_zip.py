@@ -1,4 +1,3 @@
-/bin/bash: :qa : commande introuvable
 import shutil
 import urllib.request, json
 import tempfile
@@ -7,7 +6,12 @@ from distutils.dir_util import copy_tree
 from zipfile import ZipFile
 import re
 
-# TODO put all constants definitions here
+import yolk.pypi
+
+# TODO add more constants here
+RELEASE_NAME = "gmic_blender" #-$(date +%F_%H_%M_%S)
+ADDON_PATH = f"downloads/{RELEASE_NAME}.zip"
+PYPI_GMIC_PACKAGE_NAME = "gmic"
 
 def is_skippable_wheel(filename):
     """Skip cpython and non-manylinux linux releases"""
@@ -17,15 +21,13 @@ def is_targettable_python_version(filename):
     return re.match(r".*cp37.*", filename) is not None
 
 def download_gmicpy_wheel_files():
-    # TODO reimplement this in yolk3k, see https://github.com/myselfhimself/gmic-blender/issues/4 and https://github.com/myselfhimself/gmic-blender/issues/6
-    r = urllib.request.urlopen("https://pypi.org/pypi/gmic/json")
-    data = json.loads(r.read())
-    releases = list(data["releases"].keys())
+    releases = yolk.pypi.CheeseShop().package_releases(PYPI_GMIC_PACKAGE_NAME)
     releases.sort()
-    latest_release = releases[-1]
+    latest_release_data = yolk.pypi.CheeseShop().release_urls(PYPI_GMIC_PACKAGE_NAME, releases[-1])
 
+    # TODO set up download caching between jobs
     with tempfile.TemporaryDirectory() as dirpath:
-        for release in data['releases'][latest_release]:
+        for release in latest_release_data:
             if is_targettable_python_version(release["filename"]):
                 if is_skippable_wheel(release["filename"]):
                     continue
@@ -40,49 +42,54 @@ def download_gmicpy_wheel_files():
                 import glob
                 whl_files = glob.glob("./gmic-py/*.whl")
                 for whl_file in whl_files:
+                    # TODO get nicer per-os-platform directory naming, for easier in-blender import
+                    extract_target_path = os.path.join(whl_file.replace(".whl", ""))
                     with ZipFile(whl_file, 'r') as zipObj:
-                        zipObj.extractall('./gmic-py')
-                gmic_py_files = glob.glob("./gmic-py/*.*")
-                for anyfile in gmic_py_files:
-                    if is_skippable_wheel(anyfile):
-                        os.unlink(anyfile)
+                        zipObj.extractall(extract_target_path)
+                    os.unlink(whl_file)
 
-def cp_parents(target_dir, files):
-    """cp --parents Python implementation
-    From https://stackoverflow.com/a/15340518/420684 with directory compatibility
-    """
-    import os, shutil
-    dirs = []
-    for file in files:
-        dirs.append(os.path.dirname(file))
-    dirs.sort(reverse=True)
-    for i in range(len(dirs)):
-        if not dirs[i] in dirs[i-1]:
-            need_dir = os.path.normpath(target_dir + dirs[i])
-            print("Creating", need_dir )
-            os.makedirs(need_dir)
-    for file in files:
-        dest = os.path.normpath(target_dir + file)
-        print("Copying %s to %s" % (file, dest))
-        if os.path.isfile(file):
-            shutil.copy(file, dest)
-        else:
-            shutil.copytree(file, dest)
+def clean_old_directories():
+    shutil.rmtree("downloads/", ignore_errors=True)
+    shutil.rmtree("gmic-py/", ignore_errors=True)
+    shutil.rmtree(RELEASE_NAME, ignore_errors=True)
 
-# Clean old stuff first
-shutil.rmtree("downloads/", ignore_errors=True)
-shutil.rmtree("gmic-py/", ignore_errors=True)
+def setup_addon_files():
+    # Copy addon files into the RELEASE_NAME directory
+    # The downloads/ directory is for final archives
+    os.mkdir("downloads")
+    os.mkdir(RELEASE_NAME)
 
-# Grab gmic-py .whl(s) from Pypi.org and extract them
-download_gmicpy_wheel_files()
+    shutil.copy('__init__.py', RELEASE_NAME)
+    shutil.copy('README.md', RELEASE_NAME)
+    copy_tree('gmic-py', RELEASE_NAME)
 
-# Zip all of this into the downloads/ directory
-RELEASE_NAME = gmic_blender #-$(date +%F_%H_%M_%S)
-ADDON_PATH = f"downloads/{RELEASE_NAME}.zip"
-os.mkdir("downloads")
-os.mkdir(RELEASE_NAME)
-cp_parents(RELEASE_NAME, ['__init__.py', 'gmic-py/', 'assets/gmic_filters.json', 'README.md')
-#zip $ADDON_PATH -r $RELEASE_NAME # Python make python
-shutil.rmtree(RELEASE_NAME)
-print()
-print("here you are :) static add-on to test in Blender: $ADDON_PATH")
+    # TODO This json file will be useless from gmic 2.9.0
+    assets_dir = os.path.join(RELEASE_NAME, 'assets')
+    os.makedirs(assets_dir)
+    shutil.copy('assets/gmic_filters.json', assets_dir)
+
+def zip_addon_files():
+    # Per https://www.tutorialspoint.com/How-to-zip-a-folder-recursively-using-Python
+    import os
+    import zipfile
+    def zipdir(path, ziph):
+        # ziph is zipfile handle
+        for root, dirs, files in os.walk(path):
+            for file in files:
+                ziph.write(os.path.join(root, file))
+    zipf = zipfile.ZipFile(ADDON_PATH, 'w', zipfile.ZIP_DEFLATED)
+    zipdir(RELEASE_NAME, zipf)
+    zipf.close()
+
+def make_addon_zip():
+    clean_old_directories()
+    # Grab gmic-py .whl(s) from Pypi.org and extract them
+    download_gmicpy_wheel_files()
+    setup_addon_files()
+    zip_addon_files()
+    shutil.rmtree(RELEASE_NAME)
+    shutil.rmtree('gmic-py')
+    print(f"here you are :) static add-on to test in Blender: {ADDON_PATH}")
+
+if __name__ == "__main__":
+    make_addon_zip()

@@ -32,7 +32,8 @@ jobs:
         key: ${{ matrix.os }}-blender-${{ matrix.blender-version }}
     - name: Download Blender ${{ matrix.blender-version }} and test it with pytest
       run: |
-        bash make_addon_zip.bash
+        pip install -r make_addon_requirements.txt
+        python make_addon_zip.py
         pip install -r blender_addon_tester_requirements.txt
         python test_gmic_blender_addon.py
     - name: Expose coverage as a CI download
