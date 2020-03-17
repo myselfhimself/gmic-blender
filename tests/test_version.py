@@ -17,3 +17,7 @@ def test_versionID_fail(bpy_module):
     expect_version = (0, 1, 1)
     return_version = get_version(bpy_module)
     assert not expect_version == return_version
+
+def test_gmic_loaded():
+    import gmic
+    assert type(gmic.Gmic.run).__name__ == 'method_descriptor'

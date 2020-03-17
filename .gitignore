@@ -1,3 +1,5 @@
+coverage.xml
+.coverage
 downloads
 gmic-py
 tests/__pycache__

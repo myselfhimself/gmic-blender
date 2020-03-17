@@ -14,16 +14,16 @@ import platform
 __GMIC_ADDON_ROOT_PATH = os.path.abspath(os.path.dirname(__file__))
 __GMIC_FILTERS_JSON_PATH = os.path.join(__GMIC_ADDON_ROOT_PATH, "assets", "gmic_filters.json")
 __GMIC_LOADED__ = False
-__GMIC_PY_RELATIVE_LIBS_DIR = os.path.join("gmic-py", "-".join([platform.system().lower(), platform.architecture()[0]]))
+__GMIC_PY_RELATIVE_LIBS_DIR = "-".join([platform.system().lower(), platform.architecture()[0]])
 
 def register():
     print("Registering " + bl_info["name"])
-    # TODO uncomment this when basic testing setup is ready
-    # if not load_gmic_binary_library():
-    #     print("Failed loading G'MIC binary library :-(")
-    # else:
-    #     print(dir(gmic))
-    #     generate_nodes_from_gmic_filters(load_gmic_filters())
+    if not load_gmic_binary_library():
+        print("Failed loading G'MIC binary library :-(")
+    else:
+        import gmic
+        print(dir(gmic))
+        generate_nodes_from_gmic_filters(load_gmic_filters())
 
 
 def unregister():
@@ -33,18 +33,29 @@ def load_gmic_binary_library():
     global __GMIC_LOADED__
 
     if __GMIC_LOADED__:
-        return
+        return True
+
+    __GMIC_LOADED__ = False
 
     import os
     import sys
     libdir = os.path.join(__GMIC_ADDON_ROOT_PATH, __GMIC_PY_RELATIVE_LIBS_DIR)
     if libdir not in sys.path:
-        sys.path.append(libdir)
+        sys.path.insert(0, libdir)
+    print("Added libdir to sys.path:", libdir)
+
     try:
+        print("trying gmic import")
         import gmic
+        print("gmic import worked")
         __GMIC_LOADED__ = True
     except ImportError as err:
-        raise LibraryLoadError("Cannot load gmic binary python module. Details:" + sys.exc_info()[0])
+        raise ImportError(f"Cannot load G'MIC binary python module at {libdir}. Details: {sys.exc_info()[0]}")
+
+    try:
+        type(gmic.Gmic) == type
+    except AttributeError as err:
+        raise ImportError("G'MIC binary Python module was loaded improperly from {libdir} and is without symbols. Details: {sys.exc_info()[0]}")
 
     return __GMIC_LOADED__
 
