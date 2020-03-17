@@ -32,12 +32,12 @@ jobs:
       with:
         path: ${{ env.GMICPY_DOWNLOADS_CACHE }}
         key: gmic-py-${{ matrix.gmic-py-version }}
-    - name: Cache Blender release download
+    - name: Cache ${{ matrix.os }} Blender ${{ matrix.blender-version }} release download
       uses: actions/cache@v1
       with:
         path: ${{ env.BLENDER_CACHE }}
         key: ${{ matrix.os }}-blender-${{ matrix.blender-version }}
-    - name: Download Blender ${{ matrix.blender-version }} and test it with pytest
+    - name: Grab Blender ${{ matrix.blender-version }}, build gmic-blender ${{ matrix.gmic-py-version}} and test them with pytest
       run: |
         pip install -r make_addon_requirements.txt
         python make_addon_zip.py
