@@ -20,6 +20,20 @@ def is_skippable_wheel(filename):
 def is_targettable_python_version(filename):
     return re.match(r".*cp37.*", filename) is not None
 
+def get_simplified_directory_name_from_wheel(whl_filename):
+    """ Return a full target directory path where a wheel should be extracted, that the Blender addon can generate
+    The target expression on the Blender addon side will be: platform.system().lower() + "-" + platform.architecture()[0]"""
+    parent_directory_name = os.path.dirname(whl_filename)
+    target_subdirectory_name = os.path.basename(whl_filename).replace(".whl", "")
+    if re.match(r".*macosx.*x86_64.*", whl_filename):
+        target_subdirectory_name = "darwin-64bit"
+    elif re.match(r".*linux.*x86_64.*", whl_filename):
+        target_subdirectory_name = "linux-64bit"
+    elif re.match(r".*linux.*686.*", whl_filename):
+        target_subdirectory_name = "linux-32bit"
+    # Add support for macosx 32bit (or not..) and for Windows
+    return os.path.join(parent_directory_name, target_subdirectory_name)
+
 def download_gmicpy_wheel_files():
     releases = yolk.pypi.CheeseShop().package_releases(PYPI_GMIC_PACKAGE_NAME)
     releases.sort()
@@ -42,8 +56,7 @@ def download_gmicpy_wheel_files():
                 import glob
                 whl_files = glob.glob("./gmic-py/*.whl")
                 for whl_file in whl_files:
-                    # TODO get nicer per-os-platform directory naming, for easier in-blender import
-                    extract_target_path = os.path.join(whl_file.replace(".whl", ""))
+                    extract_target_path = get_simplified_directory_name_from_wheel(whl_file)
                     with ZipFile(whl_file, 'r') as zipObj:
                         zipObj.extractall(extract_target_path)
                     os.unlink(whl_file)
