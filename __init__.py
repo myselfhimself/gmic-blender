@@ -14,7 +14,7 @@ import platform
 __GMIC_ADDON_ROOT_PATH = os.path.abspath(os.path.dirname(__file__))
 __GMIC_FILTERS_JSON_PATH = os.path.join(__GMIC_ADDON_ROOT_PATH, "assets", "gmic_filters.json")
 __GMIC_LOADED__ = False
-__GMIC_PY_RELATIVE_LIBS_DIR = os.path.join("gmic-py", "-".join(platform.system().lower(), platform.architecture()[0])
+__GMIC_PY_RELATIVE_LIBS_DIR = os.path.join("gmic-py", "-".join(platform.system().lower(), platform.architecture()[0]))
 
 def register():
     print("Registering " + bl_info["name"])
