@@ -13,7 +13,7 @@ jobs:
       max-parallel: 4
       matrix:
         blender-version: ["2.80", "2.81a", "2.82"]
-        os: [ubuntu-latest] #, windows-latest]
+        os: [ubuntu-latest, macos-latest] #, windows-latest]
         gmic-py-version: ["2.8.4"]
         #blender-version: ["2.80"]
         #os: [ubuntu-latest, windows-latest, macos-latest]
