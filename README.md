@@ -7,7 +7,7 @@
 # gmic-blender
 
 
-This WIP official G'MIC plugin for Blender3D makes use of the [G'MIC Python binding](https://github.com/dtschump/gmic-py) and will add new Nodes to Blender3d without forking Blender's code. This project is under the CeCILL-A free software license.
+This WIP official G'MIC plugin for Blender3D uses the [G'MIC Python binding](https://github.com/dtschump/gmic-py) and will add new Nodes to Blender3d without forking Blender's code. This project is under the CeCILL-A free software license.
 
 Estimated time of arrival of 1 first generic Node: mid-february 2020.
 
