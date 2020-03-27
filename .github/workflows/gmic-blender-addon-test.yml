@@ -17,6 +17,7 @@ jobs:
         gmic-py-version: ["2.8.4"]
     env:
       BLENDER_CACHE: ${{ github.workspace }}/.blender_releases_cache # The place where blender releases are downloaded
+      BLENDER_VERSION: ${{ matrix.blender-version }}
       GMICPY_DOWNLOADS_CACHE: ${{ github.workspace }}/.gmicpy_wheels_cache # The place where blender releases are downloaded
 
     steps:
@@ -50,7 +51,7 @@ jobs:
         pip install -r make_addon_requirements.txt
         python make_addon_zip.py
         pip install -r blender_addon_tester_requirements.txt
-        python test_gmic_blender_addon.py
+        python test_gmic_blender_addon.py # Uses the BLENDER_VERSION environment variable
     - name: Expose coverage as a CI download
       uses: actions/upload-artifact@v1
       with:
