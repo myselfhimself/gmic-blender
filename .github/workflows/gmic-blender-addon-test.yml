@@ -28,11 +28,11 @@ jobs:
       uses: actions/setup-python@v1
       with:
         python-version: 3.7
-    - name: Cache Gmic Python ${{ matrix.gmic-py-version }} wheels download
+    - name: Cache Gmic Python ${{ matrix.gmic-py-version }} ${{ matrix.os}} wheels download
       uses: actions/cache@v1
       with:
         path: ${{ env.GMICPY_DOWNLOADS_CACHE }}
-        key: gmic-py-${{ matrix.gmic-py-version }}
+        key: gmic-py-${{ matrix.gmic-py-version }}-${{ matrix.os }}
     - name: Cache ${{ matrix.os }} Blender ${{ matrix.blender-version }} release download
       uses: actions/cache@v1
       with:
