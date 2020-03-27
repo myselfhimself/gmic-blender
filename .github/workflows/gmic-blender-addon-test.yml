@@ -38,7 +38,13 @@ jobs:
     - name: Install MacOSX fftw and libomp with Homebrew
       if: matrix.os == 'macos-latest'
       run: |
-              brew install fftw libomp
+        brew install fftw libomp
+    - name: Fix blender 2.7* for Linux, by apt-getting similar blender package providing required dependencies
+      if: matrix.os == 'ubuntu-latest' && startsWith(matrix.blender-version, '2.7')
+      run: |
+        sudo add-apt-repository ppa:thomas-schiex/blender-legacy
+        sudo apt-get update
+        sudo apt-get install blender # A blender 2.79 package most probably
     - name: Grab Blender ${{ matrix.blender-version }}, build gmic-blender ${{ matrix.gmic-py-version}} and test them with pytest
       run: |
         pip install -r make_addon_requirements.txt
