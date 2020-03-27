@@ -50,12 +50,12 @@ def load_gmic_binary_library():
         print("gmic import worked")
         __GMIC_LOADED__ = True
     except ImportError as err:
-        raise ImportError(f"Cannot load G'MIC binary python module at {libdir}. Details: {sys.exc_info()[0]}")
+        raise ImportError("Cannot load G'MIC binary python module at {}. Details: {}".format(libdir, sys.exc_info()[0]))
 
     try:
         type(gmic.Gmic) == type
     except AttributeError as err:
-        raise ImportError("G'MIC binary Python module was loaded improperly from {libdir} and is without symbols. Details: {sys.exc_info()[0]}")
+        raise ImportError("G'MIC binary Python module was loaded improperly from {} and is without symbols. Details: {}".format(libdir, sys.exc_info()[0]))
 
     return __GMIC_LOADED__
 
