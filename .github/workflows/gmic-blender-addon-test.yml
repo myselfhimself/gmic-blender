@@ -13,7 +13,8 @@ jobs:
       max-parallel: 4
       matrix:
         blender-version: ["2.80", "2.81a", "2.82"]
-        os: [ubuntu-latest, macos-latest] #, windows-latest]
+        # os: [ubuntu-latest, macos-latest] #, windows-latest]
+        os: [macos-latest] #, windows-latest]
         gmic-py-version: ["2.8.4"]
         #blender-version: ["2.80"]
         #os: [ubuntu-latest, windows-latest, macos-latest]
@@ -37,6 +38,10 @@ jobs:
       with:
         path: ${{ env.BLENDER_CACHE }}
         key: ${{ matrix.os }}-blender-${{ matrix.blender-version }}
+    - name: Install MacOSX fftw
+      if: matrix.os == "macos-latest"
+      run: |
+        brew install fftw
     - name: Grab Blender ${{ matrix.blender-version }}, build gmic-blender ${{ matrix.gmic-py-version}} and test them with pytest
       run: |
         pip install -r make_addon_requirements.txt
