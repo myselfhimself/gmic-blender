@@ -25,7 +25,6 @@ def register():
         print(dir(gmic))
         generate_nodes_from_gmic_filters(load_gmic_filters())
 
-
 def unregister():
     print("Unregistring " + bl_info["name"])
 
@@ -69,5 +68,6 @@ def load_gmic_filters():
     return json.loads(filters_json)
 
 def generate_nodes_from_gmic_filters(gmic_filters_dict):
-    print(gmic_filters_dict)
+    print("Loaded gmic_filters JSON overview:", gmic_filters_dict["format_version"], gmic_filters_dict["gmic_version"], "categories:", len(gmic_filters_dict["categories"]))
+    print("<STUB nodes should be generated from filters here>")
     # TODO foreach loop on dict, create 1 node by filter
