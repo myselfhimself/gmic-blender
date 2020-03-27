@@ -9,7 +9,7 @@
 
 This WIP official G'MIC plugin for [Blender3D 2.8x](https://www.blender.org/) uses the [G'MIC Python binding](https://github.com/dtschump/gmic-py) and will add new Nodes to Blender3d without forking Blender's code. This project is under the CeCILL-A free software license.
 
-Estimated time of arrival of 1 first generic Node: mid-february 2020.
+Estimated time of arrival of 1 first generic Node: April 2020.
 
 This is being worked on at the [GREYC](https://www.greyc.fr/) Image public research laboratory in Caen, France, with temporary funding by the [INS2I CNRS Information & Interaction Sciences Institute](https://ins2i.cnrs.fr/fr/institut).
 
