@@ -13,6 +13,10 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v1
+        with:
+          python-version: 3.7
       - name: Build project # This would actually build your project, using zip for an example artifact
         run: |
           pip install -r make_addon_requirements.txt
