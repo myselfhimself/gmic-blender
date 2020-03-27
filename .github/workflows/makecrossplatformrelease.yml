@@ -13,6 +13,7 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+        run: echo ::set-env name=RELEASE_VERSION::${GITHUB_REF:10}
       - name: Set up Python
         uses: actions/setup-python@v1
         with:
@@ -39,5 +40,5 @@ jobs:
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
           asset_path: ./downloads/gmic_blender.zip
-          asset_name: gmic_blender-${{ github.ref }}.zip
+          asset_name: gmic_blender-${{ RELEASE_VERSION }}.zip
           asset_content_type: application/zip
