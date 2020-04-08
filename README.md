@@ -16,7 +16,7 @@ This is being worked on at the [GREYC](https://www.greyc.fr/) Image public resea
 ## Installing
 For now, gmic can be imported from Blender's Python :) The addon should work on Linux and MacOS.
 On MacOS you may need to install libomp and fftw first yourself using Homebrew: `brew install libomp fftw`.
-1. [Head over to the Releases section an early zip addon archive.](https://github.com/myselfhimself/gmic-blender/releases)
+1. [Head over to the Releases section and download an early zip addon archive.](https://github.com/myselfhimself/gmic-blender/releases)
 1. [Add the gmic-blender addon .zip to Blender as a 3rd-party addon.](https://docs.blender.org/manual/en/latest/editors/preferences/addons.html#rd-party-add-ons)
 1. [Open up a text editor view into Blender](https://docs.blender.org/manual/en/latest/editors/text_editor.html), type "import gmic" and execute it with `Alt+P`.
 
