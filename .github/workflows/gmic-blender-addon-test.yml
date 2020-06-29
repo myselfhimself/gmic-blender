@@ -25,8 +25,10 @@ jobs:
       uses: actions/setup-python@v1
       with:
         python-version: 3.7
-    - name: Set latest gmic-py version into env
-      run: echo ::set-env name=GMICPYVERSION::$(python get_latest_gmicpy_version.py)
+    - name: Install python requirements and set latest gmic-py version into env
+      run: |
+        pip install -r make_addon_requirements.txt
+        echo ::set-env name=GMICPYVERSION::$(python get_latest_gmicpy_version.py)
     - name: Cache Gmic Python ${{ env.GMICPYVERSION }} all-platforms wheels download
       uses: actions/cache@v1
       with:
@@ -43,7 +45,6 @@ jobs:
         brew install fftw libomp
     - name: Grab Blender ${{ matrix.blender-version }}, build gmic-blender ${{ env.GMICPYVERSION }} and test them with pytest
       run: |
-        pip install -r make_addon_requirements.txt
         python make_addon_zip.py
         pip install -r blender_addon_tester_requirements.txt
         python test_gmic_blender_addon.py # Uses the BLENDER_VERSION environment variable
