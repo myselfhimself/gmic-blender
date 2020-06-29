@@ -9,11 +9,13 @@
 
 This WIP official G'MIC plugin for [Blender3D 2.8x](https://www.blender.org/) uses the [G'MIC Python binding](https://github.com/dtschump/gmic-py) and will add new Nodes to Blender3d without forking Blender's code. This project is under the CeCILL-A free software license.
 
-Estimated time of arrival of 1 first generic Node: April 2020.
+Estimated time of arrival of 1 first generic Node: September 2020.
 
 This is being worked on at the [GREYC](https://www.greyc.fr/) Image public research laboratory in Caen, France, with temporary funding by the [INS2I CNRS Information & Interaction Sciences Institute](https://ins2i.cnrs.fr/fr/institut).
 
 ## Installing
+[The latest version is v0.0.8 embedding gmic-py 2.9.0.](https://github.com/myselfhimself/gmic-blender/issues/15)
+
 For now, gmic can be imported from Blender's Python :) The addon should work on Linux and MacOS.
 On MacOS you may need to install libomp and fftw first yourself using Homebrew: `brew install libomp fftw`.
 1. [Head over to the Releases section and download an early zip addon archive.](https://github.com/myselfhimself/gmic-blender/releases)

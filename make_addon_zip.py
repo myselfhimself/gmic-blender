@@ -1,3 +1,8 @@
+"""
+Run this after installing the make_addon_requirements.txt with python 3.7 or more eg. in a virtual environment.
+It will create a freshest release of gmic-blender embedding gmic-py inside the downloads directory.
+"""
+
 import shutil
 import urllib.request, json
 import tempfile
