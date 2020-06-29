@@ -14,7 +14,6 @@ jobs:
       matrix:
         blender-version: ["2.80", "2.81a", "2.82a", "2.83.0", "2.90.0"]
         os: [ubuntu-latest, macos-latest] #, windows-latest]
-        gmic-py-version: ["2.8.4"]
     env:
       BLENDER_CACHE: ${{ github.workspace }}/.blender_releases_cache # The place where blender releases are downloaded
       BLENDER_VERSION: ${{ matrix.blender-version }}
@@ -26,11 +25,13 @@ jobs:
       uses: actions/setup-python@v1
       with:
         python-version: 3.7
-    - name: Cache Gmic Python ${{ matrix.gmic-py-version }} all-platforms wheels download
+    - name: Set latest gmic-py version into env
+      run: echo ::set-env name=GMICPYVERSION::$(python get_latest_gmicpy_version.py)
+    - name: Cache Gmic Python ${{ env.GMICPYVERSION }} all-platforms wheels download
       uses: actions/cache@v1
       with:
         path: ${{ env.GMICPY_DOWNLOADS_CACHE }}
-        key: gmic-py-${{ matrix.gmic-py-version }}
+        key: gmic-py-${{ env.GMICPYVERSION }}
     - name: Cache ${{ matrix.os }} Blender ${{ matrix.blender-version }} release download
       uses: actions/cache@v1
       with:
@@ -40,7 +41,7 @@ jobs:
       if: matrix.os == 'macos-latest'
       run: |
         brew install fftw libomp
-    - name: Grab Blender ${{ matrix.blender-version }}, build gmic-blender ${{ matrix.gmic-py-version}} and test them with pytest
+    - name: Grab Blender ${{ matrix.blender-version }}, build gmic-blender ${{ env.GMICPYVERSION }} and test them with pytest
       run: |
         pip install -r make_addon_requirements.txt
         python make_addon_zip.py
